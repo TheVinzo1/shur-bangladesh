@@ -48,6 +48,8 @@ const T = {
     stretch: "Stretch the notes to this division only (more detail, but notes no longer match other divisions)",
     musical: "Snap to the raga scale (16 notes: more tuneful, less exact)",
     srMode: "I use a screen reader (Shur's own voice stays quiet)",
+    srQuiet: "Shur's voice is off because \"I use a screen reader\" is ticked in Options. Untick it to hear Shur speak.",
+    noVoice: "This browser can't speak. Try Chrome or Edge, and check the sound is on.",
     tempSrcLabel: "Temperature data", optTempPower: "NASA POWER model (grid average)", optTempStation: "Weather station thermometers (GISTEMP record)",
     rainSrcLabel: "Rain data", optRainPower: "NASA POWER (1981–2025)", optRainImerg: "NASA IMERG satellite (2001–2025)",
     srcMissing: (p) => `Some of the chosen data isn't saved for ${p} yet, so Shur uses NASA POWER there.`,
@@ -129,6 +131,8 @@ const T = {
     stretch: "সুরগুলো শুধু এই বিভাগের মাপে ছড়াও (বেশি খুঁটিনাটি, তবে অন্য বিভাগের সুরের সঙ্গে আর মিলবে না)",
     musical: "রাগের স্কেলে বাজাও (১৬টি সুর: বেশি সুরেলা, কম নিখুঁত)",
     srMode: "আমি স্ক্রিন রিডার ব্যবহার করি (সুর নিজে কথা বলবে না)",
+    srQuiet: "অপশনে \"আমি স্ক্রিন রিডার ব্যবহার করি\" চালু আছে, তাই সুরের কণ্ঠ বন্ধ। সুরের কথা শুনতে এটা বন্ধ করুন।",
+    noVoice: "এই ব্রাউজার কথা বলতে পারে না। Chrome বা Edge ব্যবহার করুন, আর সাউন্ড চালু আছে কি না দেখুন।",
     tempSrcLabel: "তাপমাত্রার তথ্য", optTempPower: "NASA POWER মডেল (এলাকার গড়)", optTempStation: "আবহাওয়া কেন্দ্রের থার্মোমিটার (GISTEMP রেকর্ড)",
     rainSrcLabel: "বৃষ্টির তথ্য", optRainPower: "NASA POWER (১৯৮১–২০২৫)", optRainImerg: "NASA IMERG স্যাটেলাইট (২০০১–২০২৫)",
     srcMissing: (p) => `বেছে নেওয়া কিছু তথ্য ${p}-এর জন্য এখনো সংরক্ষিত নেই, তাই সেখানে NASA POWER ব্যবহার হচ্ছে।`,
@@ -935,12 +939,15 @@ function announce(text) {
   clearTimeout(annTimer);
   annTimer = setTimeout(() => { $("announcer").textContent = ""; requestAnimationFrame(() => ($("announcer").textContent = text)); }, 150);
 }
-let warnedVoice = false;
+let warnedVoice = false, lastUtterance = null, speakTimer;
 function speak(text) {
   // Screen-reader users already hear every announcement, so Shur's own voice stays quiet.
-  if (state.sr) return;
-  const synth = window.speechSynthesis; if (!synth) return;
-  synth.cancel();
+  if (state.sr) { setStatus(t("srQuiet")); return; }
+  const synth = window.speechSynthesis; if (!synth) { setStatus(t("noVoice")); return; }
+  // Chrome can drop an utterance queued in the same moment as cancel(), or stay stuck "paused",
+  // so cancel only when needed, resume, and queue the new sentence a moment later.
+  if (synth.speaking || synth.pending) synth.cancel();
+  synth.resume();
   const voices = synth.getVoices();
   let lang = state.lang, say = text;
   const bnVoice = voices.find((v) => /^bn/i.test(v.lang));
@@ -953,7 +960,9 @@ function speak(text) {
   const voice = lang === "bn" ? bnVoice : voices.find((v) => /^en/i.test(v.lang));
   if (voice) u.voice = voice;
   u.rate = 0.95;
-  synth.speak(u);
+  lastUtterance = u; // keep a reference so the browser doesn't drop it mid-sentence
+  clearTimeout(speakTimer);
+  speakTimer = setTimeout(() => synth.speak(u), 60);
 }
 // Re-render the same sentence in English when no Bangla voice is available.
 function englishOf() {
@@ -1058,8 +1067,14 @@ function setSat(mode) {
 }
 document.addEventListener("keydown", (e) => {
   if (e.altKey || e.ctrlKey || e.metaKey) return;
-  const tag = e.target.tagName;
-  if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT") return;
+  const tag = e.target.tagName, type = (e.target.type || "").toLowerCase();
+  if (tag === "TEXTAREA" || (tag === "INPUT" && !["checkbox", "radio", "button"].includes(type))) return;
+  // On a dropdown or tick box, keep its own keys (arrows, space) but still let S, R and T work.
+  if (tag === "SELECT" || tag === "INPUT") {
+    const k = e.key.toLowerCase();
+    if (e.shiftKey || !["s", "r", "t"].includes(k)) return;
+    e.preventDefault();
+  }
   const onButton = tag === "BUTTON" || tag === "SUMMARY" || tag === "A";
   const digit = /^Digit([0-8])$/.exec(e.code);
   if (e.shiftKey && digit && digit[1] !== "0") { e.preventDefault(); setCompare(PLACES[+digit[1] - 1].id); }
