@@ -91,6 +91,13 @@ const T = {
     satNone: "No daily satellite colour images exist before the year 2000. Choose a later year to see Bangladesh from space.",
     satCap: (d, s) => `${s} image of Bangladesh, ${d}. The dot is the place you're listening to.`,
     satErr: "Satellite image unavailable for this date.",
+    satOffline: "Offline demo mode is on, so satellite pictures (which need the internet) are hidden.",
+    offline: "Offline demo: use only the NASA data saved with Shur (no internet needed)",
+    mapping: (x) => `Right now: ${x.what}, from ${x.lo} at the lowest note (G3, 196 Hz) to ${x.hi} at the highest (G6, 1,568 Hz), ${x.musical ? "snapped to the 16 notes of the raga scale" : "gliding smoothly so every 0.1 °C sounds different"}. Notes outside that range play at the lowest or highest note. Rain sound: silent at 0 mm and loudest at ${x.rhi} mm ${x.rUnit} (square-root scaled, so light rain is still audible). Bell: ${x.bell}. Thunder: ${x.thunder}. ${x.shared ? "Every division uses this same scale, so the same note means the same value everywhere." : "The scale is stretched to this division only, so notes don't match other divisions."}`,
+    mapWhat: { years: "pitch is the yearly average temperature", decades: "pitch is the decade's average temperature", months: "pitch is how much warmer or cooler the month was than its 1981–2010 normal", monsoon: "pitch is the day's average temperature" },
+    mapRain: { years: "a year", decades: "a year (decade average)", months: "a month", monsoon: "a day" },
+    mapBell: { years: "the 5 hottest years", decades: "the hottest decade", months: "the hottest 3% of months", monsoon: "the hottest 5% of days" },
+    mapThunder: { years: "the 3 wettest years", decades: "the wettest decade", months: "the wettest 3% of months", monsoon: "the wettest 5% of days and any day with 89 mm or more" },
     noBnVoice: "This device has no Bangla voice, so Shur speaks in English. The text on screen stays in Bangla.",
     fWarm: "warmer per decade", fCool: "cooler per decade", modelNote: "A warning about temperature: NASA POWER temperatures come from the MERRA-2 weather model, averaged over a grid square about 50 kilometres wide. Over these same years, Bangladesh Meteorological Department weather stations recorded warming, and 2011 to 2020 was their warmest decade on record. So this model trend differs from what thermometers on the ground show.",
     fModel: "weather stations show warming", fWarmestDecade: "warmest decade",
@@ -174,6 +181,13 @@ const T = {
     satNone: "২০০০ সালের আগে প্রতিদিনের রঙিন স্যাটেলাইট ছবি নেই। মহাকাশ থেকে বাংলাদেশ দেখতে পরের কোনো বছর বেছে নিন।",
     satCap: (d, s) => `${s} ছবি, বাংলাদেশ, ${d}। বিন্দুটি আপনি যে জায়গা শুনছেন।`,
     satErr: "এই তারিখের স্যাটেলাইট ছবি পাওয়া যায়নি।",
+    satOffline: "অফলাইন ডেমো মোড চালু, তাই স্যাটেলাইট ছবি (যার জন্য ইন্টারনেট লাগে) দেখানো হচ্ছে না।",
+    offline: "অফলাইন ডেমো: শুধু সুরের সাথে সংরক্ষিত নাসার তথ্য ব্যবহার করুন (ইন্টারনেট লাগবে না)",
+    mapping: (x) => `এখন: ${x.what}; সবচেয়ে নিচু সুরে (G3, ১৯৬ Hz) ${x.lo}, সবচেয়ে উঁচু সুরে (G6, ১,৫৬৮ Hz) ${x.hi}, ${x.musical ? "রাগ স্কেলের ১৬টি সুরে বাঁধা" : "মসৃণভাবে, তাই প্রতি ০.১ °C আলাদা শোনায়"}। এর বাইরের মান সবচেয়ে নিচু বা উঁচু সুরে বাজে। বৃষ্টির শব্দ: ০ মিমি-তে নীরব, ${x.rUnit} ${x.rhi} মিমি-তে সবচেয়ে জোরে (বর্গমূল অনুপাতে, তাই হালকা বৃষ্টিও শোনা যায়)। ঘণ্টা: ${x.bell}। বজ্রপাত: ${x.thunder}। ${x.shared ? "সব বিভাগে একই স্কেল, তাই একই সুর মানে সব জায়গায় একই মান।" : "স্কেলটা শুধু এই বিভাগের জন্য টানা, তাই অন্য বিভাগের সুরের সাথে মিলবে না।"}`,
+    mapWhat: { years: "সুরের উচ্চতা = বছরের গড় তাপমাত্রা", decades: "সুরের উচ্চতা = দশকের গড় তাপমাত্রা", months: "সুরের উচ্চতা = মাসটি তার ১৯৮১–২০১০-এর স্বাভাবিকের চেয়ে কতটা গরম বা ঠান্ডা", monsoon: "সুরের উচ্চতা = দিনের গড় তাপমাত্রা" },
+    mapRain: { years: "বছরে", decades: "বছরে (দশকের গড়)", months: "মাসে", monsoon: "দিনে" },
+    mapBell: { years: "সবচেয়ে গরম ৫টি বছর", decades: "সবচেয়ে গরম দশক", months: "সবচেয়ে গরম ৩% মাস", monsoon: "সবচেয়ে গরম ৫% দিন" },
+    mapThunder: { years: "সবচেয়ে বৃষ্টির ৩টি বছর", decades: "সবচেয়ে বৃষ্টির দশক", months: "সবচেয়ে বৃষ্টির ৩% মাস", monsoon: "সবচেয়ে বৃষ্টির ৫% দিন এবং ৮৯ মিমি বা তার বেশি বৃষ্টির যেকোনো দিন" },
     noBnVoice: "এই ডিভাইসে বাংলা কণ্ঠ নেই, তাই সুর ইংরেজিতে কথা বলবে। পর্দার লেখা বাংলাতেই থাকবে।",
     fWarm: "উষ্ণতা বেড়েছে প্রতি দশকে", fCool: "তাপমাত্রা কমেছে প্রতি দশকে", modelNote: "তাপমাত্রা নিয়ে একটি সতর্কতা: NASA POWER-এর তাপমাত্রা আসে MERRA-2 আবহাওয়া মডেল থেকে, প্রায় ৫০ কিলোমিটার চওড়া একটি এলাকার গড়। একই বছরগুলোতে বাংলাদেশ আবহাওয়া অধিদপ্তরের কেন্দ্রগুলো উষ্ণতা বৃদ্ধি রেকর্ড করেছে, আর তাদের মাপে ২০১১ থেকে ২০২০ ছিল সবচেয়ে গরম দশক। তাই এই মডেলের ধারা মাটিতে থার্মোমিটারের মাপের সঙ্গে মেলে না।",
     fModel: "আবহাওয়া কেন্দ্রে উষ্ণতা বেড়েছে", fWarmestDecade: "সবচেয়ে গরম দশক",
@@ -275,6 +289,8 @@ const state = {
   stretch: false, musical: false, sr: false, tempSrc: "power", rainSrc: "imerg",
 };
 try { state.sr = localStorage.getItem("shur:sr") === "1"; } catch (_) {}
+// Offline demo: read only the NASA data saved in data/, never the network. Also on with ?offline=1.
+try { state.offline = /[?&]offline=1/.test(location.search) || localStorage.getItem("shur:offline") === "1"; } catch (_) { state.offline = false; }
 const place = () => PLACES.find((p) => p.id === state.placeId);
 const cmpPlace = () => PLACES.find((p) => p.id === state.cmpId) || null;
 const cmpName = () => cmpPlace()?.[state.lang];
@@ -286,6 +302,13 @@ function powerUrl(kind, p, start, end, params) {
   return `${POWER}/${kind}/point?parameters=${params}&community=AG&longitude=${p.lon}&latitude=${p.lat}&start=${start}&end=${end}&format=JSON`;
 }
 async function getJSON(url, backup) {
+  if (state.offline) {
+    if (!backup) throw new Error("No saved copy for offline mode");
+    if (cache.has(backup)) return cache.get(backup);
+    const res = await fetch(backup);
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    const j = await res.json(); cache.set(backup, j); return j;
+  }
   if (cache.has(url)) return cache.get(url);
   try { const hit = localStorage.getItem("shur:" + url); if (hit) { const j = JSON.parse(hit); cache.set(url, j); return j; } } catch (_) {}
   let j, fromBackup = false;
@@ -486,6 +509,7 @@ function setRanges() {
   if (!state.stretch) {
     const R = SHARED[state.track];
     [m.pmin, m.pmax] = R.p; [m.rmin, m.rmax] = R.r;
+    renderMapping();
     return;
   }
   const all = state.steps.flatMap((s) => (s.c ? [s, s.c] : [s]));
@@ -493,6 +517,17 @@ function setRanges() {
   const rv = all.map((s) => s.r).filter((v) => v != null);
   m.pmin = Math.min(...pv); m.pmax = Math.max(...pv);
   m.rmin = Math.min(...rv); m.rmax = Math.max(...rv);
+  renderMapping();
+}
+// Show the exact sound rules in use, so anyone can check a note against its number.
+function renderMapping() {
+  const m = state.meta, el = $("mapping"); if (!m || !el) return;
+  const tr = state.track, L = T[state.lang];
+  const deg = (v) => loc((tr === "months" && v > 0 ? "+" : "") + f1(v)) + " °C";
+  el.textContent = t("mapping", {
+    what: L.mapWhat[tr], lo: deg(m.pmin), hi: deg(m.pmax), musical: state.musical,
+    rhi: loc(fmtInt(m.rmax)), rUnit: L.mapRain[tr], bell: L.mapBell[tr], thunder: L.mapThunder[tr], shared: !state.stretch,
+  });
 }
 
 // ---------------------------------------------------------------- audio
@@ -923,7 +958,7 @@ function renderSat(s) {
   pin.style.left = `${((p.lon - BBOX.w) / (BBOX.e - BBOX.w)) * 100}%`;
   pin.style.top = `${((BBOX.n - p.lat) / (BBOX.n - BBOX.s)) * 100}%`;
   pin.hidden = !L;
-  if (!L) { img.hidden = true; empty.hidden = false; empty.textContent = t("satNone"); $("sat-cap").textContent = ""; return; }
+  if (!L || state.offline) { img.hidden = true; pin.hidden = !!L; empty.hidden = false; empty.textContent = t(L ? "satOffline" : "satNone"); $("sat-cap").textContent = ""; return; }
   const url = `https://gibs.earthdata.nasa.gov/wms/epsg4326/best/wms.cgi?SERVICE=WMS&REQUEST=GetMap&VERSION=1.3.0&LAYERS=${L.id}&STYLES=&CRS=EPSG:4326&BBOX=${BBOX.s},${BBOX.w},${BBOX.n},${BBOX.e}&WIDTH=480&HEIGHT=620&FORMAT=image/jpeg&TIME=${date}`;
   const shown = `${loc(s.d || 15)} ${T[state.lang].months[(s.m || 2) - 1]} ${loc(s.y)}`;
   img.hidden = false; empty.hidden = true;
@@ -1007,6 +1042,7 @@ function applyLang() {
   updatePlayBtn(); renderControls();
   $("speed-out").textContent = loc(state.speed) + "×";
   if (state.steps.length) { relabel(); renderChart(); renderFacts(); renderTable(); show(state.i, { quiet: true }); }
+  renderMapping();
 }
 function choosePlace(id) {
   if (id === state.placeId) return;
@@ -1048,7 +1084,13 @@ $("lang-bn").addEventListener("click", () => { state.lang = "bn"; applyLang(); }
 $("speed").addEventListener("input", (e) => { state.speed = +e.target.value; $("speed-out").textContent = loc(state.speed) + "×"; });
 $("compare").addEventListener("change", (e) => setCompare(e.target.value));
 $("stretch").addEventListener("change", (e) => { state.stretch = e.target.checked; setRanges(); if (state.steps.length) { renderChart(); moveCursor(state.i); } });
-$("musical").addEventListener("change", (e) => { state.musical = e.target.checked; });
+$("musical").addEventListener("change", (e) => { state.musical = e.target.checked; renderMapping(); });
+$("offline").checked = state.offline;
+$("offline").addEventListener("change", (e) => {
+  state.offline = e.target.checked;
+  try { localStorage.setItem("shur:offline", state.offline ? "1" : "0"); } catch (_) {}
+  cache.clear(); build();
+});
 $("temp-src").addEventListener("change", (e) => { state.tempSrc = e.target.value; if (state.track !== "monsoon") build(); });
 $("rain-src").addEventListener("change", (e) => { state.rainSrc = e.target.value; if (state.track !== "monsoon") build(); });
 $("sr").checked = state.sr;
@@ -1069,11 +1111,10 @@ document.addEventListener("keydown", (e) => {
   if (e.altKey || e.ctrlKey || e.metaKey) return;
   const tag = e.target.tagName, type = (e.target.type || "").toLowerCase();
   if (tag === "TEXTAREA" || (tag === "INPUT" && !["checkbox", "radio", "button"].includes(type))) return;
-  // On a dropdown or tick box, keep its own keys (arrows, space) but still let S, R and T work.
+  // On a dropdown or tick box, keep its own keys (space, and arrows in a dropdown) but let Shur's other keys work.
   if (tag === "SELECT" || tag === "INPUT") {
-    const k = e.key.toLowerCase();
-    if (e.shiftKey || !["s", "r", "t"].includes(k)) return;
-    e.preventDefault();
+    if (e.key === " " || (tag === "SELECT" && e.key.startsWith("Arrow"))) return;
+    if (tag === "SELECT" || /^[a-z0-9]$/i.test(e.key)) e.preventDefault();
   }
   const onButton = tag === "BUTTON" || tag === "SUMMARY" || tag === "A";
   const digit = /^Digit([0-8])$/.exec(e.code);

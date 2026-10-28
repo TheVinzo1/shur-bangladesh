@@ -74,6 +74,7 @@ Limits of the station data: Bangladesh's records in the GHCN archive have big ga
 - **Bell:** the 5 hottest years, the hottest decade, or the hottest 3% of months / 5% of days.
 - **Thunder:** the 3 wettest years, the wettest decade, the wettest 3% of months, or very heavy rain days.
 - **Compare mode:** the comparison division plays in the right ear with a softer, reed-like tone.
+- **The rules are on screen:** under **How to listen**, Shur shows the exact mapping for the current track, for example "24.0 °C at the lowest note (G3, 196 Hz) to 28.0 °C at the highest (G6, 1,568 Hz)", so anyone can check a note against its number.
 - Built with the Web Audio API and the Web Speech API. No libraries.
 
 ## Method notes and limits
@@ -92,6 +93,12 @@ Limits of the station data: Bangladesh's records in the GHCN archive have big ga
 It's a static site with no build step: `index.html`, `style.css`, `app.js`. Open `index.html` in a browser (or serve the folder with any static server, e.g. `python3 -m http.server`). It loads data live from NASA POWER and NASA GIBS.
 
 **Backup data:** if NASA POWER can't be reached, Shur falls back to saved copies in `data/`, named `<division>-monthly.json` and `<division>-monsoon2026.json` (for example `data/dhaka-monthly.json`). The same script also writes the IMERG and station files (`<division>-imerg.json`, `<division>-gistemp.json`), which the app reads only from `data/`. The **Refresh NASA backup data** GitHub Action (`.github/workflows/refresh-data.yml`) downloads them every Monday and can be run by hand from the Actions tab. To refresh locally instead, run `node scripts/fetch-data.mjs` (Node 18+).
+
+**Offline demo:** tick **Options → Offline demo**, or open the site with `?offline=1` at the end of the address. Shur then reads only the NASA data saved in `data/` and never calls the internet, so a demo works with no connection. Satellite pictures are hidden in this mode because they need the internet.
+
+## License and AI use
+
+Shur is open source under the [Apache License 2.0](LICENSE). How we used AI tools while building it is described in [docs/AI_USE.md](docs/AI_USE.md).
 
 ## Team
 

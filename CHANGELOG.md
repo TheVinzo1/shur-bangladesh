@@ -1,5 +1,12 @@
 # Changelog
 
+## Build-guide checks (October 2026)
+
+- **Sound rules on screen:** "How to listen" now shows the exact mapping in use (temperature range per note, rain range, what rings the bell and thunder).
+- **Offline demo mode:** Options → Offline demo (or `?offline=1`) uses only the saved NASA data, with no network calls.
+- **Keys:** S, R, T, the number keys and compare keys now work after clicking a dropdown or tick box; the voice is more reliable in Chrome, and Shur says on screen when its voice is off.
+- **Apache License 2.0** and **docs/AI_USE.md** added.
+
 ## Mentor follow-ups, round 2 (October 2026)
 
 - **Fairer significance test.** Trends are now tested with an effective number of years that allows for neighbouring years being related (lag-1 autocorrelation), as our mentor answers admitted the old test didn't. NASA POWER's cooling is now significant in 4 divisions (Dhaka, Rajshahi, Khulna, Rangpur) instead of 7. The station warming stays significant everywhere it exists.
