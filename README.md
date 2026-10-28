@@ -87,7 +87,7 @@ Limits of the station data: Bangladesh's records in the GHCN archive have big ga
 
 ## Run it
 
-**Live site:** https://thevinzo1.github.io/shur-claude-/
+**Live site:** https://thevinzo1.github.io/shur-bangladesh/
 
 It's a static site with no build step: `index.html`, `style.css`, `app.js`. Open `index.html` in a browser (or serve the folder with any static server, e.g. `python3 -m http.server`). It loads data live from NASA POWER and NASA GIBS.
 
