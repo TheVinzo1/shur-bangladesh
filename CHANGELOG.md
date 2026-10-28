@@ -3,7 +3,7 @@
 ## Mentor follow-ups, round 2 (October 2026)
 
 - **Fairer significance test.** Trends are now tested with an effective number of years that allows for neighbouring years being related (lag-1 autocorrelation), as our mentor answers admitted the old test didn't. NASA POWER's cooling is now significant in 4 divisions (Dhaka, Rajshahi, Khulna, Rangpur) instead of 7. The station warming stays significant everywhere it exists.
-- **One live-site link everywhere:** https://thevinzo1.github.io/shur-claude-/ (the repo's GitHub Pages address).
+- **One live-site link everywhere:** https://thevinzo1.github.io/shur-bangladesh/.
 
 ## Data sources fix (October 2026)
 
