@@ -41,7 +41,7 @@ p { text-wrap: pretty; }
 .visually-hidden { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 .skip { position: absolute; left: 12px; top: -80px; background: var(--ink); color: var(--paper); padding: 10px 16px; z-index: 5; font-weight: 600; }
 .skip:focus { top: 12px; }
-:where(a, button, input, summary, [tabindex]):focus-visible { outline: 3px solid var(--red); outline-offset: 3px; }
+:where(a, button, input, select, summary, [tabindex]):focus-visible { outline: 3px solid var(--red); outline-offset: 3px; }
 main:focus { outline: none; }
 
 /* ---------- masthead, like the title block of a score ---------- */
@@ -142,6 +142,15 @@ legend { margin-top: 0; }
 .row output { min-width: 34px; text-align: right; font-family: var(--mono); font-size: 14px; color: var(--ink2); }
 .check { gap: 10px; cursor: pointer; min-height: 40px; }
 .check input { accent-color: var(--red); width: 20px; height: 20px; margin: 0; }
+.check { align-items: flex-start; }
+.check input { flex: none; margin-top: 3px; }
+.stack { display: grid; gap: 6px; margin: 6px 0 12px; }
+select {
+  font: inherit; color: var(--ink); background: var(--paper); border: 1px solid var(--ink); border-radius: 2px;
+  min-height: 44px; padding: 6px 10px; width: 100%;
+}
+select:focus-visible { outline: 3px solid var(--red); outline-offset: 3px; }
+.hint { font-size: 14px; color: var(--ink2); margin: 8px 0 0; }
 
 /* ---------- stage ---------- */
 .transport { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
@@ -176,6 +185,8 @@ legend { margin-top: 0; }
 .val.heat .v { color: var(--red); }
 .val.rain .v { color: var(--indigo); }
 .val .sub { font-size: 14px; color: var(--ink2); min-height: 1.4em; }
+.cmp-line { margin: 12px 0 0; padding-left: 14px; border-left: 3px dashed var(--ink2); font-family: var(--mono); font-size: 15px; color: var(--ink2); }
+:lang(bn) .cmp-line { font-family: var(--body); }
 .flags { min-height: 30px; margin: 14px 0 0; display: flex; gap: 6px; flex-wrap: wrap; }
 .flag { font-family: var(--mono); font-size: 12px; font-weight: 500; letter-spacing: 0.04em; padding: 3px 10px; border: 1px solid; border-radius: 2px; }
 :lang(bn) .flag { font-family: var(--body); font-size: 13px; }
@@ -193,6 +204,7 @@ legend { margin-top: 0; }
 .chart .tline.slur { stroke: var(--ink); stroke-width: 1; opacity: 0.45; }
 .chart .head { fill: var(--ink); transform-box: fill-box; transform-origin: center; transform: rotate(-22deg); }
 .chart .head.hot { fill: var(--red); }
+.chart .cline { fill: none; stroke: var(--ink2); stroke-width: 2; stroke-dasharray: 6 5; stroke-linejoin: round; }
 .chart .trend { stroke: var(--red); stroke-width: 1.5; stroke-dasharray: 8 6; opacity: 0.8; }
 .chart .cursor { stroke: var(--red); stroke-width: 1.5; }
 .chart .dot { fill: var(--red); stroke: var(--paper); stroke-width: 2.5; transform-box: fill-box; transform-origin: center; transform: rotate(-22deg); }
@@ -233,6 +245,7 @@ figcaption { font-size: 14px; color: var(--ink2); margin-top: 10px; }
 .sw.heat { background: var(--red); }
 .sw.rain { background: var(--indigo); border-radius: 1px; width: 4px; height: 16px; transform: none; }
 .sw.thunder { background: var(--ink); }
+.sw.ears { background: none; border: 2px dashed var(--ink2); }
 .sw.bell { background: none; border: 2px solid var(--red); }
 kbd { font-family: var(--mono); font-size: 12px; border: 1px solid var(--ink); border-bottom-width: 2px; border-radius: 3px; padding: 1px 7px; background: var(--paper); }
 details summary { cursor: pointer; font-weight: 600; min-height: 44px; display: flex; align-items: center; list-style: none; }

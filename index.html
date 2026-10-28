@@ -8,7 +8,7 @@
   <meta name="theme-color" content="#f3ecdf" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#16140f" media="(prefers-color-scheme: dark)">
   <meta property="og:title" content="Shur (সুর) · Hear Bangladesh's climate">
-  <meta property="og:description" content="45 years of NASA climate data for Bangladesh, played as music. Built for blind and low-vision listeners, in Bangla and English.">
+  <meta property="og:description" content="45 years of NASA climate data for Bangladesh, played as music. Built for blind and low-vision listeners, with Bangla and English text.">
   <meta property="og:type" content="website">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='19' fill='%230a1020' stroke='%23f2a33a' stroke-width='1.5'/%3E%3Cpath d='M6 24c4 0 4-8 8-8s4 12 8 12 4-16 8-16 4 12 6 12' fill='none' stroke='%23f2a33a' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -31,7 +31,7 @@
       <p class="glyph" lang="bn" aria-hidden="true">সুর</p>
       <div class="mast-text">
         <h1 id="h-hero" data-i18n="heroTitle">Hear 45 years of Bangladesh's climate.</h1>
-        <p class="mast-sub" data-i18n="tagline">NASA climate data for all eight divisions, played as music. Made for listening first: it speaks Bangla and English and works entirely from the keyboard.</p>
+        <p class="mast-sub" data-i18n="tagline">NASA climate data for all eight divisions, played as music. Made for listening first: it reads the numbers aloud and works entirely from the keyboard.</p>
         <p class="mast-cta">
           <a class="cta" href="#player" id="start"><svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18"><path d="M8 5v14l11-7z"/></svg><span data-i18n="ctaStart">Start listening</span></a>
           <a class="cta-text" href="#h-how" data-i18n="ctaHow">How to listen</a>
@@ -61,12 +61,35 @@
       </fieldset>
 
       <fieldset>
-        <legend data-i18n="optionsLegend">3. Options</legend>
+        <legend data-i18n="cmpLegend">3. Compare</legend>
+        <label class="stack" for="compare"><span data-i18n="cmpLabel">Compare with another division</span>
+          <select id="compare" aria-describedby="cmp-hint"></select>
+        </label>
+        <p class="hint" id="cmp-hint" data-i18n="cmpHint">Your division plays in the left ear, the other in the right, on the same scale.</p>
+      </fieldset>
+
+      <fieldset>
+        <legend data-i18n="optionsLegend">4. Options</legend>
         <label class="row" for="speed"><span data-i18n="speed">Speed</span>
           <input type="range" id="speed" min="0.5" max="2" step="0.25" value="1">
           <output id="speed-out" for="speed">1×</output>
         </label>
+        <label class="stack" for="temp-src"><span data-i18n="tempSrcLabel">Temperature data</span>
+          <select id="temp-src">
+            <option value="power" data-i18n="optTempPower">NASA POWER model (grid average)</option>
+            <option value="station" data-i18n="optTempStation">Weather station thermometers (GISTEMP record)</option>
+          </select>
+        </label>
+        <label class="stack" for="rain-src"><span data-i18n="rainSrcLabel">Rain data</span>
+          <select id="rain-src">
+            <option value="imerg" data-i18n="optRainImerg" selected>NASA IMERG satellite (2001–2025)</option>
+            <option value="power" data-i18n="optRainPower">NASA POWER (1981–2025)</option>
+          </select>
+        </label>
         <label class="row check"><input type="checkbox" id="narrate" checked> <span data-i18n="narrate">Speak details when paused</span></label>
+        <label class="row check"><input type="checkbox" id="sr"> <span data-i18n="srMode">I use a screen reader (Shur's own voice stays quiet)</span></label>
+        <label class="row check"><input type="checkbox" id="musical"> <span data-i18n="musical">Snap to the raga scale (16 notes: more tuneful, less exact)</span></label>
+        <label class="row check"><input type="checkbox" id="stretch"> <span data-i18n="stretch">Stretch the notes to this division only (more detail, but notes no longer match other divisions)</span></label>
       </fieldset>
       </div>
     </section>
@@ -75,7 +98,7 @@
       <div class="core">
       <h2 id="h-now" class="visually-hidden" data-i18n="nowHeading">Now playing</h2>
 
-      <div class="transport">
+      <div class="transport" id="player-app" role="application" aria-label="Shur player">
         <button type="button" class="ctl" id="prev" aria-label="Previous note"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M7 6h2v12H7zM20 6v12l-9-6z"/></svg></button>
         <button type="button" class="play" id="play" aria-label="Play">
           <svg class="i-play" aria-hidden="true" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
@@ -91,6 +114,7 @@
           <p class="val heat"><span class="k" data-i18n="temp">Temperature</span><span class="v" id="r-temp">—</span><span class="sub" id="r-anom"></span></p>
           <p class="val rain"><span class="k" data-i18n="rain">Rain</span><span class="v" id="r-rain">—</span><span class="sub" id="r-rainsub"></span></p>
         </div>
+        <p class="cmp-line" id="r-cmp" hidden></p>
         <p class="flags" id="r-flags"></p>
       </div>
 
@@ -134,10 +158,11 @@
       <div>
         <h3 data-i18n="soundsHeading">Sounds</h3>
         <ul class="legend">
-          <li><span class="sw heat" aria-hidden="true"></span><span data-i18n="lgPitch">Higher note = hotter</span></li>
+          <li><span class="sw heat" aria-hidden="true"></span><span data-i18n="lgPitch">Higher note = hotter, on the same scale in every division</span></li>
           <li><span class="sw rain" aria-hidden="true"></span><span data-i18n="lgRain">Rain sound = how much it rained</span></li>
           <li><span class="sw thunder" aria-hidden="true"></span><span data-i18n="lgThunder">Thunder = one of the wettest</span></li>
           <li><span class="sw bell" aria-hidden="true"></span><span data-i18n="lgBell">Bell = one of the hottest</span></li>
+          <li><span class="sw ears" aria-hidden="true"></span><span data-i18n="lgEars">Compare mode: left ear = your division, right ear = the other</span></li>
         </ul>
       </div>
       <div>
@@ -146,9 +171,13 @@
           <li><kbd>Space</kbd> <span data-i18n="kPlay">play / pause</span></li>
           <li><kbd>←</kbd> <kbd>→</kbd> <span data-i18n="kStep">step one note</span></li>
           <li><kbd>1</kbd>–<kbd>8</kbd> <span data-i18n="kPlace">choose a division</span></li>
+          <li><kbd>Shift</kbd> + <kbd>1</kbd>–<kbd>8</kbd> <span data-i18n="kCmp">compare with a division</span></li>
+          <li><kbd>0</kbd> <span data-i18n="kCmpOff">stop comparing</span></li>
+          <li><kbd>T</kbd> <span data-i18n="kTrack">change track</span></li>
           <li><kbd>S</kbd> <span data-i18n="kStory">tell the story</span></li>
           <li><kbd>R</kbd> <span data-i18n="kRead">read this note aloud</span></li>
         </ul>
+        <p class="hint" data-i18n="srHint">Using NVDA or JAWS? The keys work while focus is on the player buttons. If they don't, switch to focus mode (NVDA+Space in NVDA, Insert+Z in JAWS).</p>
       </div>
       <div>
         <h3 data-i18n="dataHeading">The numbers</h3>
@@ -163,7 +192,7 @@
   </main>
 
   <footer class="foot">
-    <p data-i18n-html="credits">Data: <a href="https://power.larc.nasa.gov/">NASA POWER</a> (NASA Langley Research Center, built on NASA GMAO MERRA-2). Satellite imagery: <a href="https://www.earthdata.nasa.gov/engage/open-data-services-software/earthdata-developer-portal/gibs-api">NASA GIBS</a> (VIIRS NOAA-20, MODIS Terra).</p>
+    <p data-i18n-html="credits">Data: <a href="https://power.larc.nasa.gov/">NASA POWER</a> (NASA Langley Research Center, built on NASA GMAO MERRA-2), <a href="https://gpm.nasa.gov/data/imerg">NASA GPM IMERG</a> rain (via POWER), and <a href="https://data.giss.nasa.gov/gistemp/">NASA GISTEMP</a> station temperatures. Satellite imagery: <a href="https://www.earthdata.nasa.gov/engage/open-data-services-software/earthdata-developer-portal/gibs-api">NASA GIBS</a> (VIIRS NOAA-20, MODIS Terra).</p>
     <p data-i18n="team">Built by Team Nyopus, BRAC University, for the NASA Space Apps Challenge 2026: The Earth Information Jukebox.</p>
   </footer>
 
