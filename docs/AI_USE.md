@@ -2,7 +2,6 @@
 
 Space Apps allows AI tools as long as teams name them, explain how they were used, and show their own work. This file is our record.
 
-> **Team: check before submission.** Fill in the parts marked "confirm", and match the wording of the official Space Apps submission guide when it is published (13 November 2026).
 
 ## Tools
 
